@@ -50,7 +50,7 @@ var Canvas = function()
 	
 		this.camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 0.1, 10000 );
 		this.camera.position.set(400, 400, -400);
-		this.camera.up = new THREE.Vector3(0, 1, 0);
+		this.camera.up = new THREE.Vector3(0, 0, 1);
 		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 		this.scene = new THREE.Scene();
@@ -85,6 +85,10 @@ var Canvas = function()
 	    	side: THREE.DoubleSide
 	    });
 
+	    materialMesh = new THREE.MeshBasicMaterial({ 
+	    	vertexColors: THREE.VertexColors 
+	    });
+
 
 
 		// MESH
@@ -116,6 +120,9 @@ var Canvas = function()
 	    		pointMesh[j] = [ triangles[i][j][0], triangles[i][j][1] ];
 	    		geometrie.vertices.push(new THREE.Vector3(pointMesh[j][0], pointMesh[j][1], triangles[i][j][2] ));
 
+
+
+
 	    	}
 
 	    	for(var j = 0; j < 3; j++)
@@ -128,6 +135,13 @@ var Canvas = function()
 	    	
 
 	    	geometrie.faces.push( new THREE.Face3(i * 3, (i * 3) + 1, (i * 3) + 2));
+
+	    	point = geometrie.vertices[ i ];
+		    color = new THREE.Color( 0xffffff );
+		    color.setRGB( 0.5 + point.x / size, 0.5 + point.y / size, 0.5 + point.z / size );
+		    geometrie.colors[i] = color;
+
+	    	
 
 	    	geometrie.faceVertexUvs[0].push(
 	    		new THREE.Vector2( pointMesh[0][0], pointMesh[0][1] ), 
@@ -173,7 +187,7 @@ var Canvas = function()
 		document.body.appendChild(this.renderer.domElement);
 		
 		var clone = this;
-		document.addEventListener("mousemove", function(event){ clone.interaction(event); }, false);
+		//document.addEventListener("mousemove", function(event){ clone.interaction(event); }, false);
 		
 	}
 	
